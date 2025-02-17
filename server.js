@@ -3,11 +3,12 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 const dotenv = require("dotenv");
+const { Buffer } = require("buffer");
 
 dotenv.config();  // Load environment variables
 
-// Initialize Firebase Admin SDK
-const serviceAccount = require("./firebase-key.json");
+// Decode the Firebase credentials from the GitHub secret
+const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, 'base64').toString('utf-8'));
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
