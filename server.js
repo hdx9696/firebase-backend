@@ -8,7 +8,9 @@ const { Buffer } = require("buffer");
 dotenv.config();  // Load environment variables
 
 // Decode the Firebase credentials from the GitHub secret
-const serviceAccount = JSON.parse(Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, 'base64').toString('utf-8'));
+const serviceAccount = JSON.parse(
+    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, 'base64').toString('utf-8')
+);
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -43,15 +45,6 @@ app.post("/messages", async (req, res) => {
         res.status(500).json({ error: "Failed to add message" });
     }
 });
-
-const dotenv = require("dotenv");
-const { Buffer } = require("buffer");
-
-dotenv.config();
-
-const serviceAccount = JSON.parse(
-    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, "base64").toString("utf-8")
-);
 
 // Start Server
 app.listen(PORT, () => {
