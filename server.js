@@ -7,9 +7,13 @@ const { Buffer } = require("buffer");
 
 dotenv.config();  // Load environment variables
 
-// Decode the Firebase credentials from the GitHub secret
+if (!process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+    throw new Error("❌ FIREBASE_SERVICE_ACCOUNT_KEY is not set. Check Render environment variables.");
+}
+
+// Decode Firebase credentials
 const serviceAccount = JSON.parse(
-    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, 'base64').toString('utf-8')
+    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, "base64").toString("utf-8")
 );
 
 admin.initializeApp({
@@ -23,6 +27,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3001;
+
+// ✅ Fix: Add a root route to confirm the server is running
+app.get("/", (req, res) => {
+    res.send("🔥 Firebase Backend is Running!");
+});
 
 // API Route to Get Messages
 app.get("/messages", async (req, res) => {
@@ -48,5 +57,5 @@ app.post("/messages", async (req, res) => {
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
