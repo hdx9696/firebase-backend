@@ -44,6 +44,15 @@ app.post("/messages", async (req, res) => {
     }
 });
 
+const dotenv = require("dotenv");
+const { Buffer } = require("buffer");
+
+dotenv.config();
+
+const serviceAccount = JSON.parse(
+    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, "base64").toString("utf-8")
+);
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
